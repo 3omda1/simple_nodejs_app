@@ -1,20 +1,27 @@
 
 pipeline {
-    agent any
+    agent { label 'Ahmed-EC2' }
 
     stages {
         
         stage('Pukking Repo Files') {
             steps {
-              git branch: "${GIT_BRANCH}", credentialsId: 'github', url: 'https://github.com/ahmedKhaled1995/simple_nodejs_app.git'
+              git branch: "${GIT_BRANCH}",  url: 'https://github.com/ahmedKhaled1995/simple_nodejs_app'
             }
         }
         
-        stage('Stage 1') {
+         stage('build-Dockerfile') {
             steps {
-                sh ''' 
-                    ls
-                    date
+                sh '''
+                docker build -t 3omda-image .
+                echo "Done ya 3omda"
+                '''
+            }
+         stage('deploy') {
+            steps {
+                sh '''
+                docker run 3omda-image 
+                echo "Done ya 3omda"
                 '''
             }
         }
